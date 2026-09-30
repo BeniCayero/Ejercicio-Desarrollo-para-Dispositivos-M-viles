@@ -3,9 +3,11 @@
     "name": "SIGMA Navegación",
     "slug": "sigma-navegacion",
     "scheme": "sigma",
+    "userInterfaceStyle": "automatic",
     "plugins": [
       "expo-router",
       "expo-status-bar"
-    ]
+    ],
+    "experiments": { "typedRoutes": true }
   }
 }
