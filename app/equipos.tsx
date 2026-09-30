@@ -1,20 +1,23 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { Link } from 'expo-router';
+import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { equipment } from '../data/equipment';
 
 export default function EquiposScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Equipos registrados</Text>
-      <Text style={styles.subtitle}>Activos a cargo del área de mantenimiento.</Text>
+      <Text style={styles.subtitle}>Tocá un equipo para ver su detalle.</Text>
       <FlatList
         data={equipment}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Text style={styles.code}>{item.code}</Text>
-            <Text style={styles.name}>{item.name}</Text>
-            <Text style={styles.detail}>{item.location} · {item.status}</Text>
-          </View>
+          <Link href={{ pathname: '/equipos/[id]', params: { id: item.id } }} asChild>
+            <Pressable style={styles.card}>
+              <Text style={styles.code}>{item.code}</Text>
+              <Text style={styles.name}>{item.name}</Text>
+              <Text style={styles.detail}>{item.location} · {item.status}</Text>
+            </Pressable>
+          </Link>
         )}
         contentContainerStyle={styles.list}
       />
