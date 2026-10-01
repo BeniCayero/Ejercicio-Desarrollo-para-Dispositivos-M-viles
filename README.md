@@ -1,90 +1,155 @@
 # SIGMA - Navegación con Expo Router
 
-Actividad de la Clase 5 del curso de Desarrollo para Dispositivos Móviles (CTC 2026).
+Este proyecto corresponde a la **Actividad de la Clase 5 de Desarrollo para Dispositivos Móviles (CTC 2026)**.
 
-SIGMA (Sistema Inteligente de Gestión de Mantenimiento) es una aplicación móvil hecha con React Native, Expo y TypeScript. En esta actividad se construye su estructura completa de navegación con **Expo Router**: una pantalla de inicio con un menú, los listados de equipos y tareas, y una ruta dinámica para ver el detalle de cada equipo.
+SIGMA significa **Sistema Inteligente de Gestión de Mantenimiento**. La idea de esta actividad fue practicar la navegación entre distintas pantallas utilizando **React Native, Expo, TypeScript y Expo Router**.
 
-El proyecto está preparado para **Expo SDK 57** y se prueba con **Expo Go**.
+En esta versión se creó una pantalla principal desde donde se puede acceder al listado de equipos, al listado de tareas y a una pantalla para cargar una nueva tarea. También se agregó una ruta dinámica para poder entrar al detalle de cada equipo.
 
-## Flujo incluido
+El proyecto está preparado para trabajar con **Expo SDK 57** y se puede probar utilizando **Expo Go**.
 
-1. **Inicio** (`app/index.tsx`): menú con los botones **Equipos**, **Tareas** y **Nueva tarea**. Cada botón usa un `Link` para navegar a su pantalla.
-2. **Equipos** (`app/equipos.tsx`): `FlatList` con los equipos. Cada tarjeta es un `Link` a la ruta dinámica del equipo.
-3. **Detalle de equipo** (`app/equipos/[id].tsx`): ruta dinámica. Lee el parámetro `id` con `useLocalSearchParams` y muestra el código, la ubicación y el estado del equipo.
-4. **Tareas** (`app/tareas.tsx`): `FlatList` con las órdenes de trabajo.
-5. **Nueva tarea** (`app/nueva-tarea.tsx`): pantalla de carga de una nueva tarea.
+## Navegación de la aplicación
 
-Todas las pantallas están declaradas en el `Stack` de `app/_layout.tsx`. El botón de volver del encabezado regresa a la pantalla anterior.
+La aplicación comienza en la pantalla de inicio, ubicada en `app/index.tsx`. Desde ahí aparecen tres opciones principales:
+
+- **Equipos**
+- **Tareas**
+- **Nueva tarea**
+
+Cada botón utiliza `Link` de Expo Router para navegar hacia su pantalla correspondiente.
+
+En la pantalla de **Equipos** se muestra un listado mediante `FlatList`. Al tocar uno de los equipos se abre su detalle utilizando una ruta dinámica como:
+
+```text
+/equipos/eq-1
+```
+
+La pantalla `app/equipos/[id].tsx` obtiene ese `id` mediante `useLocalSearchParams` y busca la información correspondiente al equipo para mostrar sus datos.
+
+La pantalla de **Tareas** funciona de forma similar, mostrando las órdenes de trabajo cargadas en los datos simulados.
+
+Por último, **Nueva tarea** contiene la pantalla preparada para realizar la carga de una nueva orden.
+
+Todas las pantallas forman parte del `Stack` definido en `app/_layout.tsx`, por lo que también se utiliza el encabezado de navegación y el botón para volver a la pantalla anterior.
 
 ## Estructura del proyecto
 
-```
+```text
 sigma-navegacion/
 ├── app/
-│   ├── _layout.tsx         // Stack raíz e importación de global.css
-│   ├── index.tsx           // Ruta /  (menú de inicio)
-│   ├── equipos.tsx         // Ruta /equipos
+│   ├── _layout.tsx
+│   ├── index.tsx
+│   ├── equipos.tsx
 │   ├── equipos/
-│   │   └── [id].tsx        // Ruta dinámica /equipos/[id]
-│   ├── tareas.tsx          // Ruta /tareas
-│   └── nueva-tarea.tsx     // Ruta /nueva-tarea
+│   │   └── [id].tsx
+│   ├── tareas.tsx
+│   └── nueva-tarea.tsx
 ├── data/
-│   ├── equipment.ts        // Equipos simulados y getEquipmentById
-│   └── tasks.ts            // Tareas simuladas
+│   ├── equipment.ts
+│   └── tasks.ts
 ├── types/
-│   ├── equipment.ts        // Tipo Equipment
-│   └── task.ts             // Tipo Task
-├── capturas/               // Capturas de la aplicación funcionando
-├── global.css              // Tailwind CSS y tema de NativeWind
-├── metro.config.js         // Metro con withNativewind
-├── postcss.config.mjs      // Plugin de Tailwind CSS
-├── nativewind-env.d.ts     // Tipos para usar className
+│   ├── equipment.ts
+│   └── task.ts
+├── capturas/
+├── global.css
+├── metro.config.js
+├── postcss.config.mjs
+├── nativewind-env.d.ts
 ├── app.json
 ├── package.json
 └── tsconfig.json
 ```
 
-## Ejecución con Expo SDK 57
+Separé los datos y los tipos de las pantallas para mantener el proyecto un poco más ordenado.
 
-Requisitos: Node.js LTS y Expo Go en el celular, o un emulador Android con Expo Go.
+En `data/` se encuentran los equipos y tareas simulados, mientras que en `types/` están definidos los tipos de TypeScript utilizados por esos datos.
 
-Desde la carpeta del proyecto:
+## Cómo ejecutar el proyecto
+
+Primero hay que tener instalado **Node.js** y contar con **Expo Go** en el celular o con un emulador Android.
+
+Dentro de la carpeta del proyecto se ejecutan los siguientes comandos:
 
 ```bash
 npm install
 npx expo start --clear
 ```
 
-Después se escanea el código QR con Expo Go, o se presiona `a` en la terminal para abrir la aplicación en el emulador Android.
+Después se puede escanear el código QR utilizando Expo Go.
 
-## Instalación de Expo Router y NativeWind
+En caso de utilizar un emulador Android, también se puede presionar:
 
-Expo Router se agregó al proyecto en blanco (`blank-typescript`) siguiendo la guía de la clase:
+```text
+a
+```
+
+desde la terminal para abrir la aplicación.
+
+## Expo Router
+
+Para agregar Expo Router al proyecto se instalaron las dependencias necesarias:
 
 ```bash
 npx expo install expo-router react-native-safe-area-context react-native-screens expo-linking expo-constants expo-status-bar
 ```
 
-Luego se cambió `"main"` a `"expo-router/entry"` en `package.json` y se agregaron el `scheme` y el plugin `expo-router` en `app.json`.
+También se modificó el `package.json` para utilizar:
 
-NativeWind v5 se instaló con la guía para Expo SDK 57:
+```json
+"main": "expo-router/entry"
+```
+
+y se agregó la configuración correspondiente de Expo Router dentro de `app.json`.
+
+La idea principal de Expo Router es que los archivos que se encuentran dentro de la carpeta `app/` representan las rutas de la aplicación.
+
+Por ejemplo:
+
+```text
+app/index.tsx          → /
+app/equipos.tsx        → /equipos
+app/tareas.tsx         → /tareas
+app/nueva-tarea.tsx    → /nueva-tarea
+app/equipos/[id].tsx   → /equipos/:id
+```
+
+## NativeWind
+
+También se instaló y configuró **NativeWind v5** para Expo SDK 57.
 
 ```bash
 npm install --save-exact nativewind@5.0.0-rc.0 react-native-css@3.1.0-rc.0
+
 npx expo install react-native-reanimated react-native-worklets react-native-safe-area-context expo-system-ui
+
 npm install --save-dev --save-exact tailwindcss@4.1.12 @tailwindcss/postcss@4.1.12 postcss lightningcss@1.30.1
 ```
 
-NativeWind queda instalado y configurado (`global.css`, `postcss.config.mjs`, `metro.config.js` y `nativewind-env.d.ts`), pero las pantallas de esta actividad usan `StyleSheet`.
+La configuración queda preparada mediante los archivos:
 
-## Conceptos que muestra
+```text
+global.css
+postcss.config.mjs
+metro.config.js
+nativewind-env.d.ts
+```
 
-- Expo Router: cada archivo dentro de `app/` es una pantalla.
-- `Stack` con títulos en el encabezado y botón de volver.
-- `Link` con `asChild` para que un `Pressable` funcione como enlace.
-- Ruta dinámica con `[id].tsx` y lectura del parámetro con `useLocalSearchParams`.
-- Datos y tipos en archivos separados.
-- `FlatList` y estilos con `StyleSheet`.
+De todas formas, para esta actividad las pantallas usan solamente `StyleSheet` de React Native.
+
+## Conceptos trabajados
+
+En este ejercicio se practicaron principalmente:
+
+- navegación utilizando **Expo Router**
+- uso de `Stack`
+- uso de `Link`
+- `Link` junto con `asChild` y `Pressable`
+- creación de rutas dinámicas con `[id].tsx`
+- lectura de parámetros con `useLocalSearchParams`
+- uso de `FlatList`
+- separación de datos y tipos
+- tipos de TypeScript (`type`)
+- estilos utilizando `StyleSheet`
 
 ## Capturas
 
@@ -96,10 +161,14 @@ NativeWind queda instalado y configurado (`global.css`, `postcss.config.mjs`, `m
 |:---:|:---:|
 | <img src="capturas/04-tareas.png" width="220" alt="Tareas" /> | <img src="capturas/05-nueva-tarea.png" width="220" alt="Nueva tarea" /> |
 
-Recorrido de las capturas, en un emulador Android con Expo Go: Inicio → **Equipos** → tocar *Bomba centrífuga 01* abre `/equipos/eq-1` → volver al inicio → **Tareas** → volver al inicio → **Nueva tarea**.
+Las capturas muestran un recorrido básico por la aplicación:
 
-## Verificación
+**Inicio → Equipos → Detalle de un equipo → volver → Tareas → volver → Nueva tarea**
 
-- Cada botón del menú abre su pantalla: Equipos, Tareas y Nueva tarea.
-- Al tocar un equipo se abre su detalle mediante la ruta dinámica `/equipos/[id]`, con los datos del equipo elegido.
-- El botón de volver del encabezado regresa a la pantalla anterior.
+## Resultado
+
+Al finalizar la actividad quedó funcionando la navegación principal de SIGMA.
+
+Desde el menú se puede acceder correctamente a cada pantalla y, dentro del listado de equipos, seleccionar un equipo para abrir su información mediante una ruta dinámica.
+
+El botón de volver del encabezado también permite regresar normalmente a la pantalla anterior.
